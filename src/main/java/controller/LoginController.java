@@ -31,6 +31,29 @@ public class LoginController extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String servletPath = req.getServletPath();
 		if (servletPath.equals("/login")) {
+			String email = "";
+			String password = "";
+
+			// lấy toàn bộ cookie mà client truyền lên
+			Cookie[] cookies = req.getCookies();
+
+			// duyệt qua từng cookie mà client truyền lên
+			for (int i = 0; i < cookies.length; i++) {
+				// lấy tên cookie duyệt được và lưu vào trong biến cookieName
+				String cookieName = cookies[i].getName();
+				// lấy giá trị cookie duyệt được và lưu vào trong biến cookieValue
+				String cookieValue = cookies[i].getValue();
+				if (cookieName.equals("email")) {
+					email = cookieValue;
+				}
+
+				if (cookieName.equals("passsword")) {
+					password = cookieValue;
+				}
+			}
+
+			req.setAttribute("email", email);
+			req.setAttribute("password", password);
 			req.getRequestDispatcher("login.jsp").forward(req, resp);
 		}
 	}
@@ -42,17 +65,36 @@ public class LoginController extends HttpServlet {
 		String password = req.getParameter("password");
 
 		boolean isLogin = loginService.checkLogin(email, password);
-		if (isLogin == true) {
-			System.out.println("Đăng nhập thành công");
-		}
+		String remember = req.getParameter("remember");
+		List<User> list = loginService.getListUserByEmailAndPassWord(email, password);
+		try {
+			if (isLogin == true) {
+				System.out.println("Đăng nhập thành công");
+				Cookie ckRole = new Cookie("role", String.valueOf(list.get(0).getRole().getId()));
+				resp.addCookie(ckRole);
+				if (remember != null) {
+					// người dùng có checkbox lưu mật khẩu
 
-		if (isLogin) {
-			HttpSession session = req.getSession();
-			session.setAttribute("isLogin", true);
-//			session.setMaxInactiveInterval(10 * 60);
-			resp.sendRedirect(req.getContextPath() + "/dashboard");
-		} else {
-			resp.sendRedirect(req.getContextPath() + "/login");
+					// Tạo ra cookie tên là email
+					Cookie ckUserName = new Cookie("email", email);
+					// tạo ra cookie lưu password
+					Cookie ckPassWord = new Cookie("password", password);
+
+					// server yêu cầu client tạo ra 2 cookie và lưu phía client
+					resp.addCookie(ckUserName);
+					resp.addCookie(ckPassWord);
+				}
+				resp.sendRedirect("dashboard");
+
+			} else {
+				resp.setContentType("text/html;charset=UTF-8");
+				PrintWriter out = resp.getWriter();
+				out.println("<b>Đăng nhập thất bại. Vui lòng kiểm tra email hoặc mật khẩu.</b></font>");
+				RequestDispatcher rd = req.getRequestDispatcher("login");
+				rd.include(req, resp);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 }
