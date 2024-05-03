@@ -121,7 +121,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 							class="btn btn-danger pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light">Upgrade
 							to Pro</a>
 						<ol class="breadcrumb">
-							<li><a href="#">Dashboard</a></li>
+							<li><a href="dashboard">Dashboard</a></li>
 							<li class="active">Blank Page</li>
 						</ol>
 					</div>

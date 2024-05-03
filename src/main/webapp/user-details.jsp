@@ -73,7 +73,7 @@
 								class="hidden-xs">Cybersoft</b>
 							</a>
 							<ul class="dropdown-menu">
-								<li><a href="profile.jsp">Thông tin cá nhân</a></li>
+								<li><a href="profile">Thông tin cá nhân</a></li>
 								<li><a href="#">Thống kê công việc</a></li>
 								<li class="divider"></li>
 								<li><a href="#">Đăng xuất</a></li>
@@ -245,7 +245,7 @@
 							<h3 class="box-title">Đang thực hiện</h3>
 							<div class="message-center">
 								<c:forEach items="${tasks}" var="task">
-									<c:if test="${task.status.id == 2}">
+									<c:if test="${task.status.id == 1}">
 										<a href="#">
 											<div class="mail-contnet">
 												<h5>${task.name}</h5>
@@ -263,7 +263,7 @@
 							<h3 class="box-title">Đã hoàn thành</h3>
 							<div class="message-center">
 								 <c:forEach items="${tasks}" var="task">
-                            <c:if test="${task.status.id == 1}">
+                            <c:if test="${task.status.id == 2}">
                                 <a href="#">
                                     <div class="mail-contnet">
                                         <h5>${task.name}</h5>
