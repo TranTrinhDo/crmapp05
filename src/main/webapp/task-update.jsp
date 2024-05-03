@@ -156,6 +156,7 @@
 								<div class="form-group">
 									<label class="col-md-12">Người thực hiện</label>
 									<div class="col-md-12">
+									<input id="idUserOld" name="idUserOld" type="hidden" value="${task.user.id}" />
 										<select id="idUser" name="idUser"
 											class="form-control form-control-line">
 											<c:forEach items="${listUser}" var="user">
@@ -227,7 +228,7 @@
 	<script src="js/waves.js"></script>
 	<!-- Custom Theme JavaScript -->
 	<script src="js/custom.min.js"></script>
-	<script src="js/task-update1.js"></script>
+	<script src="js/task-update.js"></script>
 	<script src="js/dashboard.js"></script>
 </body>
 

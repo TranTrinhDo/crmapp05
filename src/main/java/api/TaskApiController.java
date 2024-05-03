@@ -46,10 +46,11 @@ public class TaskApiController extends HttpServlet {
 			String nameUpdate = req.getParameter("taskName");
 			String startDateUpdate = req.getParameter("startDate");
 			String endDateUpdate = req.getParameter("endDate");
-			int idUserUpdate = Integer.parseInt(req.getParameter("idUser"));
+			int idUser = Integer.parseInt(req.getParameter("idUser"));
 			int idStatusUpdate = Integer.parseInt(req.getParameter("idStatus"));
-			boolean isSuccess = taskService.updateTask(id, nameUpdate, startDateUpdate, endDateUpdate, idUserUpdate,
-					idStatusUpdate);
+			int idUserOld = Integer.parseInt(req.getParameter("idUserOld"));
+			boolean isSuccess = taskService.updateTask(id, nameUpdate, startDateUpdate, endDateUpdate, idUser,
+					idStatusUpdate,idUserOld);
 
 			baseReponse.setStatusCode(200);
 			baseReponse.setMessage(isSuccess ? "Cập nhật thành công " : "Cập nhật thất bại");

@@ -135,7 +135,7 @@ public class TaskRepository {
 		return count;
 	}
 
-	public int updateTask(int id, String name, String startDate, String endDate, int idUser, int idStatus) {
+	public int updateTask(int id, String name, String startDate, String endDate, int idUser, int idStatus,int idUserOld) {
 		int count = 0;
 		try {
 			String taskQuery = "UPDATE task t SET name = ?, start_date = ?, end_date=? , id_status=? "
@@ -154,7 +154,7 @@ public class TaskRepository {
 			PreparedStatement assigntaskStatement = connection.prepareStatement(assigntaskQuery);
 			assigntaskStatement.setInt(1, idUser);
 			assigntaskStatement.setInt(2, idStatus);
-			assigntaskStatement.setInt(3, idUser);
+			assigntaskStatement.setInt(3, idUserOld);
 			count += assigntaskStatement.executeUpdate();
 			assigntaskStatement.close();
 
@@ -188,7 +188,9 @@ public class TaskRepository {
 	public Task findTaskById(int id) {
 		Task task = new Task();
 		try {
-			String query = "SELECT * FROM task t WHERE t.id = " + id + ";";
+			String query = "SELECT t.id, t.name, t.start_date, t.end_date,t.id_project ,t.id_status , u.id AS id_user \n"
+					+ "FROM task t JOIN assigntask a ON a.id_task  = t.id \n"
+					+ "JOIN users u ON u.id = a.id_user  WHERE t.id ="+id+";";
 			Connection connection = MySQLConfig.getConnection();
 			PreparedStatement statement = connection.prepareStatement(query);
 			ResultSet resultSet = statement.executeQuery();
@@ -203,6 +205,9 @@ public class TaskRepository {
 				Status status = new Status();
 				status.setId(resultSet.getInt("id_status"));
 				task.setStatus(status);
+				User user = new User();
+				user.setId(resultSet.getInt("id_user"));
+				task.setUser(user);
 			}
 
 			connection.close();

@@ -55,10 +55,10 @@ public class TaskService {
 		return taskRepository.getListStatus();
 	}
 
-	public boolean updateTask(int id, String name, String startDate, String endDate, int idUser, int idStatus) {
+	public boolean updateTask(int id, String name, String startDate, String endDate, int idUser, int idStatus,int idUserOld) {
 		String dataStartDate = dateFormat.changeFormatDate(startDate, "-");
 		String dataEndDate = dateFormat.changeFormatDate(endDate, "-");
-		int count = taskRepository.updateTask(id, name, dataStartDate, dataEndDate, idUser, idStatus);
+		int count = taskRepository.updateTask(id, name, dataStartDate, dataEndDate, idUser, idStatus,idUserOld);
 		return count > 0;
 	}
 
